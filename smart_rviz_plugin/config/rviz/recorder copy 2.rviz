@@ -24,6 +24,18 @@ Panels:
       - /Current View1
     Name: Views
     Splitter Ratio: 0.5
+  - Class: smart_rviz_plugin/Smart Recorder
+    Name: Smart Recorder
+  - Class: smart_rviz_plugin/Smart Status
+    Name: Smart Status
+  - Class: smart_rviz_plugin/Smart Command Configurator
+    Name: Smart Command Configurator
+  - Class: smart_rviz_plugin/Smart Firmware Download
+    Name: Smart Firmware Download
+  - Class: smart_rviz_plugin/Smart Status
+    Name: Smart Status
+  - Class: smart_rviz_plugin/Smart Recorder
+    Name: Smart Recorder
 Visualization Manager:
   Class: ""
   Displays:
@@ -74,7 +86,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /smart_radar/can_targets_0
+        Value: /smart_radar/can_targets_1
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
@@ -90,7 +102,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: Intensity
       Decay Time: 0
-      Enabled: false
+      Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Max Intensity: -999999
@@ -123,7 +135,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: Intensity
       Decay Time: 0
-      Enabled: false
+      Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Max Intensity: 4096
@@ -147,7 +159,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: radar_front
+    Fixed Frame: umrr
     Frame Rate: 30
   Name: root
   Tools:

@@ -1,0 +1,23 @@
+/smart_radar:
+  ros__parameters:
+    adapters:
+      adapter_0:
+        hw_dev_id: 2
+        hw_iface_name: can0
+        hw_type: can
+        baudrate: 500000
+    master_data_serial_type: can_based
+    master_inst_serial_type: can_based
+    sensors:
+      sensor_0:
+        link_type: can
+        pub_type: target
+        model: umrr11_can_v1_1_2
+        dev_id: 2
+        id: 100
+        frame_id: radar_front
+        history_size: 10
+        uifname: umrr11_t132_automotive
+        uifmajorv: 1
+        uifminorv: 1
+        uifpatchv: 2
