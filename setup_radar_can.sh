@@ -32,7 +32,7 @@ CAN_BAUDRATE=500000
 # Tipo de adaptador CAN:
 # - "socketcan" : Adaptadores PEAK-CAN, Kvaser, etc. (detectados automáticamente)
 # - "slcan"     : Adaptadores USB-to-CAN genéricos (requiere /dev/ttyUSBx)
-CAN_ADAPTER_TYPE="socketcan"
+CAN_ADAPTER_TYPE="slcan"
 
 # Solo para SLCAN: puerto USB (ejemplo: /dev/ttyUSB0)
 SLCAN_DEVICE="/dev/ttyUSB0"
@@ -98,12 +98,31 @@ setup_slcan() {
     # Detener interfaz si existe
     ip link set "$CAN_INTERFACE" down 2>/dev/null || true
     
+    # Convertir baudrate a código -s de slcand
+    # Mapeo: 10k=s0, 20k=s1, 50k=s2, 100k=s3, 125k=s4, 250k=s5, 500k=s6, 800k=s7, 1000k=s8
+    case "$CAN_BAUDRATE" in
+        10000)   SLCAN_SPEED="0" ;;
+        20000)   SLCAN_SPEED="1" ;;
+        50000)   SLCAN_SPEED="2" ;;
+        100000)  SLCAN_SPEED="3" ;;
+        125000)  SLCAN_SPEED="4" ;;
+        250000)  SLCAN_SPEED="5" ;;
+        500000)  SLCAN_SPEED="6" ;;
+        800000)  SLCAN_SPEED="7" ;;
+        1000000) SLCAN_SPEED="8" ;;
+        *)
+            echo -e "${RED}❌ Baudrate no soportado: $CAN_BAUDRATE${NC}"
+            echo -e "${YELLOW}💡 Baudrates válidos: 10k, 20k, 50k, 100k, 125k, 250k, 500k, 800k, 1000k${NC}"
+            exit 1
+            ;;
+    esac
+    
     # Configurar SLCAN
     # -o : Open
-    # -s6 : Speed 500kbps (s4=250k, s5=500k, s6=500k, s8=1000k)
+    # -s<N> : Speed (calculado desde $CAN_BAUDRATE)
     # -t hw : Hardware flow control
     # -S 3000000 : Baudrate serial (3Mbps)
-    slcand -o -s6 -t hw -S 3000000 "$SLCAN_DEVICE" "$CAN_INTERFACE"
+    slcand -o -s${SLCAN_SPEED} -t hw -S 3000000 "$SLCAN_DEVICE" "$CAN_INTERFACE"
     
     # Activar interfaz
     ip link set "$CAN_INTERFACE" up
@@ -141,8 +160,8 @@ launch_radar() {
     echo ""
     
     # Source ROS2
-    source /opt/ros/foxy/setup.bash
-    source /code/install/setup.bash
+    source /opt/ros/humble/setup.bash
+    source /ros2_ws/install/setup.bash
     
     # Lanzar
     ros2 launch umrr_ros2_driver radar_can_muup.launch.py

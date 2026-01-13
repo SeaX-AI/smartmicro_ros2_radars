@@ -32,6 +32,12 @@ endif()
 find_package(ament_cmake_auto REQUIRED)
 find_package(Threads REQUIRED)
 find_package(visualization_msgs REQUIRED)
+find_package(point_cloud_msg_wrapper REQUIRED)
+
+ament_target_dependencies(smartmicro_radar_node    
+    point_cloud_msg_wrapper
+)
+
 
 fetchcontent_declare(json
     GIT_REPOSITORY https://github.com/nlohmann/json.git
